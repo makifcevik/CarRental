@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Business.Abstract
 {
-    public class Customer : User
+    public interface IUserSevice
     {
-        public string CompanyName { get; set; }
+
     }
 }

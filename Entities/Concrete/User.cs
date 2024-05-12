@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Abstract
+namespace Entities.Concrete
 {
-    public abstract class User : IEntity
+    public class User : IEntity
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
