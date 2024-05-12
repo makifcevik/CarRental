@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -6,20 +7,21 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CarManager : ICarService
+    public class CarManager : ManagerBase<Car, ICarDal>, ICarService
     {
         private ICarDal _carDal;
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal) : base(carDal)
         {
             _carDal = carDal;
         }
 
-        public IResult Add(Car car)
+        public override IResult Add(Car car)
         {
             //if (car == null) throw new ArgumentNullException();
             if(car.Name.Length >= 2 && car.DailyPrice > 0)
@@ -29,11 +31,6 @@ namespace Business.Concrete
             }
             return new ErrorResult();
                 
-        }
-
-        public IDataResult<List<Car>> GetAll()
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
         public IDataResult<List<Car>> GetAllByBrandId(int id)
