@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.Business
 {
-    public abstract class ManagerBase<T, TDataDal>
+    public abstract class ManagerBase<T, TDataDal> : IManagerService<T>
         where T : class, IEntity, new()
         where TDataDal : IEntityRepository<T>
     {

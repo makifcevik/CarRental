@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IRentalService
+    public interface IRentalService : IManagerService<Rental>
     {
         public bool IsAvaliable(int CarId);
     }

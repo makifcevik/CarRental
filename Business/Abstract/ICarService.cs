@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICarService
+    public interface ICarService : IManagerService<Car>
     {
         IDataResult<List<Car>> GetAllByBrandId(int id);
         IDataResult<List<Car>> GetAllByColorId(int id);
