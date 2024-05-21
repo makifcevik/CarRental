@@ -1,7 +1,8 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.Business;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -26,14 +27,14 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public override IResult Add(Car car)
         {
-            //if (car == null) throw new ArgumentNullException();
-            if(car.Name.Length >= 2 && car.DailyPrice > 0)
+            IResult result = BusinessRules.Run(
+                CheckIfCarNameExists(car.Name));
+            if(result != null)
             {
-                _carDal.Add(car);
-                return new SuccessResult();
+                return result;
             }
-            return new ErrorResult();
-                
+            _carDal.Add(car);
+            return new SuccessResult();     
         }
 
         public IDataResult<List<Car>> GetAllByBrandId(int id)
@@ -49,6 +50,16 @@ namespace Business.Concrete
         public IDataResult<List<CarDetailDto>> GetAllCarDetailDtos()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetails());
+        }
+
+        private IResult CheckIfCarNameExists(string carName)
+        {
+            var result = _carDal.GetAll(c => c.Name == carName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.CarNameAlreadyExists);
+            }
+            return new SuccessResult();
         }
     }
 }

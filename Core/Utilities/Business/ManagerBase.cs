@@ -1,4 +1,5 @@
-﻿using Core.DataAccess;
+﻿using Core.Aspects.Autofac.Validation;
+using Core.DataAccess;
 using Core.Entities;
 using Core.Utilities.Results;
 using System;
@@ -8,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Business
+namespace Core.Utilities.Business
 {
     public abstract class ManagerBase<T, TDataDal> : IManagerService<T>
         where T : class, IEntity, new()
@@ -19,12 +20,13 @@ namespace Core.Business
         {
             _dataDal = dataDal;
         }
+
         public virtual IResult Add(T entity)
         {
             _dataDal.Add(entity);
             return new SuccessResult();
         }
-        public virtual IDataResult<List<T>> GetAll(Expression<Func<T, bool>> filter=null)
+        public virtual IDataResult<List<T>> GetAll(Expression<Func<T, bool>> filter = null)
         {
             return new SuccessDataResult<List<T>>(_dataDal.GetAll(filter));
         }
