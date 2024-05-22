@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -15,6 +18,12 @@ namespace Business.Concrete
         public BrandManager(IBrandDal dataDal) : base(dataDal)
         {
 
+        }
+
+        [ValidationAspect(typeof(BrandValidator))]   
+        public override IResult Add(Brand entity)
+        {
+            return base.Add(entity);
         }
     }
 }

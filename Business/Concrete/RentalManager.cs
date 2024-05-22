@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -18,6 +20,12 @@ namespace Business.Concrete
         public RentalManager(IRentalDal rentalDal) : base(rentalDal)
         {
             _rentalDal = rentalDal;
+        }
+
+        [ValidationAspect(typeof(RentalValidator))]
+        public override IResult Add(Rental entity)
+        {
+            return base.Add(entity);
         }
         public bool IsAvaliable(int CarId)
         {

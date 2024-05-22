@@ -1,4 +1,7 @@
-﻿using Core.Utilities.Business;
+﻿using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -14,6 +17,12 @@ namespace Business.Concrete
         public UserManager(IUserDal dataDal) : base(dataDal)
         {
 
+        }
+
+        [ValidationAspect(typeof(UserValidator))]
+        public override IResult Add(User entity)
+        {
+            return base.Add(entity);
         }
     }
 }
