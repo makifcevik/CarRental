@@ -11,8 +11,13 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICarService : IManagerService<Car>
+    public interface ICarService
     {
+        public IResult Add(Car entity);
+        public IDataResult<Car> Get(Expression<Func<Car, bool>> filter);
+        public IDataResult<List<Car>> GetAll(Expression<Func<Car, bool>> filter = null);
+        public IResult Update(Car entity);
+        public IResult Delete(Car entity);
         IDataResult<List<Car>> GetAllByBrandId(int id);
         IDataResult<List<Car>> GetAllByColorId(int id);
         IDataResult<List<CarDetailDto>> GetAllCarDetailDtos();

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Business
 {
-    public abstract class ManagerBase<T, TDataDal> : IManagerService<T>
+    public abstract class ManagerBase<T, TDataDal> //: IManagerService<T>
         where T : class, IEntity, new()
         where TDataDal : IEntityRepository<T>
     {

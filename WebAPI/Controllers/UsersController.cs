@@ -8,8 +8,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        IUserSevice _userService;
-        public UsersController(IUserSevice userService)
+        IUserService _userService;
+        public UsersController(IUserService userService)
         {
             _userService = userService;
         }

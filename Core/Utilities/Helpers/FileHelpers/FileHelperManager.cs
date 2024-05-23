@@ -17,11 +17,11 @@ namespace Core.Utilities.Helpers.FileHelpers
             }
         }
 
-        public string Update(IFormFile file, string filePath, string root)
+        public string Update(IFormFile file, string fileName, string root)
         {
-            if (File.Exists(filePath))
+            if (File.Exists(root + fileName))
             {
-                File.Delete(filePath);
+                File.Delete(root + fileName);
             }
             return Upload(file, root);
         }

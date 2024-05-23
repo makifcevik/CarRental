@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IRentalService
+    public interface IUserService
     {
         public IResult Add(Rental entity);
         public IDataResult<Rental> Get(Expression<Func<Rental, bool>> filter);
         public IDataResult<List<Rental>> GetAll(Expression<Func<Rental, bool>> filter = null);
         public IResult Update(Rental entity);
         public IResult Delete(Rental entity);
-        public bool IsAvaliable(int CarId);
     }
 }

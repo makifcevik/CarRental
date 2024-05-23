@@ -11,6 +11,6 @@ namespace Core.Utilities.Helpers.FileHelpers
     {
         public string Upload(IFormFile file, string root);
         public void Delete(string filePath);
-        public string Update(IFormFile file, string filePath, string root);
+        public string Update(IFormFile file, string fileName, string root);
     }
 }
