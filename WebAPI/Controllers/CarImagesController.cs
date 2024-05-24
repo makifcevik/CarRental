@@ -50,16 +50,33 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        //[HttpPost("deletebyid")]
-        //public IActionResult Delete(int id)
-        //{
-        //    var result = _carImageService.GetByImageId(id);
-        //    //var result = _carImageService.Delete(image);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
+        {
+            var result = _carImageService.GetByImageId(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpDelete("deletebyid")]
+        public IActionResult DeleteById(int id)
+        {
+            var carImage = _carImageService.GetByImageId(id);
+            if (carImage.Data == null)
+            {
+                return BadRequest(carImage);
+            }
+
+            var result = _carImageService.Delete(carImage.Data);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }

@@ -19,9 +19,10 @@ namespace Core.Utilities.Helpers.FileHelpers
 
         public string Update(IFormFile file, string fileName, string root)
         {
-            if (File.Exists(root + fileName))
+            string fullPath = Path.Combine(root, fileName);
+            if (File.Exists(fullPath))
             {
-                File.Delete(root + fileName);
+                File.Delete(fullPath);
             }
             return Upload(file, root);
         }
@@ -37,8 +38,9 @@ namespace Core.Utilities.Helpers.FileHelpers
                 string extension = Path.GetExtension(file.FileName);
                 string guid = GuidHelper.CreateGuid();
                 string fileName = guid + extension;
+                string fullPath = Path.Combine(root, fileName);
 
-                using(FileStream fileStream = File.Create(root + fileName))
+                using(FileStream fileStream = File.Create(fullPath))
                 {
                     file.CopyTo(fileStream);
                     fileStream.Flush();

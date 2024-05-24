@@ -44,7 +44,7 @@ namespace Business.Concrete
 
         public IResult Delete(CarImage entity)
         {
-            _fileHelper.Delete(PathConstants.ImagePath + entity.ImageName);
+            _fileHelper.Delete(Path.Combine(PathConstants.ImagePath, entity.ImageName));
             _carImageDal.Delete(entity);
             return new SuccessResult();
         }
