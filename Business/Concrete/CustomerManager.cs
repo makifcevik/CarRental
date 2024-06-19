@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
@@ -20,6 +21,7 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("customer.add,admin")]
         [ValidationAspect(typeof(CustomerValidator))]
         public override IResult Add(Customer entity)
         {

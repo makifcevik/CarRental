@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
@@ -21,6 +22,7 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("color.add,admin")]
         [ValidationAspect(typeof(ColorValidator))]
         public override IResult Add(Color entity)
         {

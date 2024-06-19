@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
@@ -20,6 +21,7 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("brand.add,admin")]
         [ValidationAspect(typeof(BrandValidator))]   
         public override IResult Add(Brand entity)
         {

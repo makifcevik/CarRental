@@ -30,29 +30,34 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult Add(Rental entity)
+        public IResult Delete(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public IResult Delete(Rental entity)
+        public IDataResult<User> Get(Expression<Func<User, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<Rental> Get(Expression<Func<Rental, bool>> filter)
+        public IDataResult<List<User>> GetAll(Expression<Func<User, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<Rental>> GetAll(Expression<Func<Rental, bool>> filter = null)
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u => u.Email == email);
+        }
+
+        public IResult Update(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public IResult Update(Rental entity)
+        public List<OperationClaim> GetClaims(User user)
         {
-            throw new NotImplementedException();
+            return _userDal.GetClaims(user);
         }
     }
 }

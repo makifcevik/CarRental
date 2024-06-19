@@ -1,4 +1,5 @@
-﻿using Core.Utilities.Business;
+﻿using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
@@ -12,10 +13,12 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        public IResult Add(Rental entity);
-        public IDataResult<Rental> Get(Expression<Func<Rental, bool>> filter);
-        public IDataResult<List<Rental>> GetAll(Expression<Func<Rental, bool>> filter = null);
-        public IResult Update(Rental entity);
-        public IResult Delete(Rental entity);
+        public IResult Add(User entity);
+        public IDataResult<User> Get(Expression<Func<User, bool>> filter);
+        public IDataResult<List<User>> GetAll(Expression<Func<User, bool>> filter = null);
+        public IResult Update(User entity);
+        public IResult Delete(User entity);
+        User GetByMail(string email);
+        List<OperationClaim> GetClaims(User user);
     }
 }
