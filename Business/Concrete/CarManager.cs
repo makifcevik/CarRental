@@ -2,6 +2,7 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -17,17 +18,23 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CarManager : ManagerBase<Car, ICarDal>, ICarService
+    public class CarManager : ICarService
     {
         private ICarDal _carDal;
-        public CarManager(ICarDal carDal) : base(carDal)
+        public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
 
+        [CacheAspect]
+        public IDataResult<List<Car>> GetAll(Expression<Func<Car, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(filter));
+        }
+
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
-        public override IResult Add(Car car)
+        public IResult Add(Car car)
         {
             IResult result = BusinessRules.Run(
                 CheckIfCarNameExists(car.Name));
@@ -61,6 +68,24 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.CarNameAlreadyExists);
             }
+            return new SuccessResult();
+        }
+
+        public IDataResult<Car> Get(Expression<Func<Car, bool>> filter)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(filter));
+        }
+
+        [ValidationAspect(typeof(CarValidator))]
+        public IResult Update(Car entity)
+        {
+            _carDal.Update(entity);
+            return new SuccessResult();
+        }
+
+        public IResult Delete(Car entity)
+        {
+            _carDal.Delete(entity);
             return new SuccessResult();
         }
     }

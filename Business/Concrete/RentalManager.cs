@@ -15,20 +15,38 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class RentalManager : ManagerBase<Rental, IRentalDal>, IRentalService
+    public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
-        public RentalManager(IRentalDal rentalDal) : base(rentalDal)
+        public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
         }
 
         [SecuredOperation("rental.add,admin")]
         [ValidationAspect(typeof(RentalValidator))]
-        public override IResult Add(Rental entity)
+        public IResult Add(Rental entity)
         {
-            return base.Add(entity);
+            _rentalDal.Add(entity);
+            return new SuccessResult();
         }
+
+        public IResult Delete(Rental entity)
+        {
+            _rentalDal.Delete(entity);
+            return new SuccessResult();
+        }
+
+        public IDataResult<Rental> Get(Expression<Func<Rental, bool>> filter)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(filter));
+        }
+
+        public IDataResult<List<Rental>> GetAll(Expression<Func<Rental, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(filter));
+        }
+
         public bool IsAvaliable(int CarId)
         {
             DateTime returnDate = _rentalDal.Get(r => r.CarId == CarId).ReturnDate;
@@ -37,6 +55,12 @@ namespace Business.Concrete
                 return false;
             }
             return true;
+        }
+
+        public IResult Update(Rental entity)
+        {
+            _rentalDal.Update(entity);
+            return new SuccessResult();
         }
     }
 }

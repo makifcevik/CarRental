@@ -32,17 +32,18 @@ namespace Business.Concrete
 
         public IResult Delete(User entity)
         {
-            throw new NotImplementedException();
+            _userDal.Delete(entity);
+            return new SuccessResult();
         }
 
         public IDataResult<User> Get(Expression<Func<User, bool>> filter)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<User>(_userDal.Get(filter));
         }
 
         public IDataResult<List<User>> GetAll(Expression<Func<User, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(filter));
         }
 
         public User GetByMail(string email)
@@ -52,7 +53,8 @@ namespace Business.Concrete
 
         public IResult Update(User entity)
         {
-            throw new NotImplementedException();
+            _userDal.Update(entity);
+            return new SuccessResult();
         }
 
         public List<OperationClaim> GetClaims(User user)

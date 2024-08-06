@@ -15,18 +15,42 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ColorManager : ManagerBase<Color, IColorDal>, IColorService
+    public class ColorManager : IColorService
     {
-        public ColorManager(IColorDal colorDal) : base(colorDal)
+        IColorDal _colorDal;
+        public ColorManager(IColorDal colorDal)
         {
-
+            _colorDal = colorDal;
         }
 
         [SecuredOperation("color.add,admin")]
         [ValidationAspect(typeof(ColorValidator))]
-        public override IResult Add(Color entity)
+        public IResult Add(Color entity)
         {
-            return base.Add(entity);
+            _colorDal.Add(entity);
+            return new SuccessResult();
+        }
+
+        public IResult Delete(Color entity)
+        {
+            _colorDal.Delete(entity);
+            return new SuccessResult();
+        }
+
+        public IDataResult<Color> Get(Expression<Func<Color, bool>> filter)
+        {
+            return new SuccessDataResult<Color>(_colorDal.Get(filter));
+        }
+
+        public IDataResult<List<Color>> GetAll(Expression<Func<Color, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(filter));
+        }
+
+        public IResult Update(Color entity)
+        {
+            _colorDal.Update(entity);
+            return new SuccessResult();
         }
     }
 }
