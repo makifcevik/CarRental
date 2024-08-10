@@ -33,6 +33,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(b =>
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 var audience = builder.Configuration["TokenOptions:Audience"];
 var issuer = builder.Configuration["TokenOptions:Issuer"];
 var securityKey = builder.Configuration["TokenOptions:SecurityKey"];
@@ -70,9 +78,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowSpecificOrigin");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseAuthentication();
 
 app.MapControllers();
 
