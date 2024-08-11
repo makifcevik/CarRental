@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers.FileHelpers;
@@ -28,8 +30,9 @@ namespace Business.Concrete
             _fileHelper = fileHelper;
         }
 
-        [SecuredOperation("carImage.add,admin")]
+        [SecuredOperation("carImage.add,carImage.admin,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(IFormFile file, CarImage entity)
         {
             var result = BusinessRules.Run(
@@ -44,6 +47,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("carImage.delete,carImage.admin,admin")]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage entity)
         {
             _fileHelper.Delete(Path.Combine(PathConstants.ImagePath, entity.ImageName));
@@ -51,18 +56,24 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [PerformanceAspect]
+        [CacheAspect]
         public IDataResult<CarImage> Get(Expression<Func<CarImage, bool>> filter)
         {
             var result = _carImageDal.Get(filter);
             return new SuccessDataResult<CarImage>(result);
         }
 
+        [PerformanceAspect]
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll(Expression<Func<CarImage, bool>> filter = null)
         {
             var result = _carImageDal.GetAll(filter);
             return new SuccessDataResult<List<CarImage>>(result);
         }
 
+        [PerformanceAspect]
+        [CacheAspect]
         public IDataResult<CarImage> GetByImageId(int imageId)
         {
             var result = _carImageDal.Get(c => c.Id == imageId);
@@ -73,7 +84,9 @@ namespace Business.Concrete
             return new ErrorDataResult<CarImage>();
         }
 
-
+        [SecuredOperation("carImage.update,carImage.admin,admin")]
+        [ValidationAspect(typeof(CarImageValidator))]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(IFormFile file, CarImage entity)
         {
             _fileHelper.Update(file, entity.ImageName, PathConstants.ImagePath);
