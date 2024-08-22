@@ -102,5 +102,19 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        [CacheAspect]
+        [PerformanceAspect]
+        public IDataResult<List<CarDetailDto>> GetAllCarDetailsByBrandId(int brandId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetailsByBrandId(brandId));
+        }
+
+        [CacheAspect]
+        [PerformanceAspect]
+        public IDataResult<List<CarDetailDto>> GetAllCarDetailsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetailsByColorId(colorId));
+        }
     }
 }
