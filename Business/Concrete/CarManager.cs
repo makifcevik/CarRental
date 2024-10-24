@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -82,6 +83,12 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car entity)
         {
+            IResult result = BusinessRules.Run(
+                CheckIfCarNameExists(entity.Name));
+            if (result != null)
+            {
+                return result;
+            }
             _carDal.Update(entity);
             return new SuccessResult();
         }
